@@ -5,21 +5,22 @@ import React, { useMemo, useEffect } from "react";
 ================================= */
 const GoogleAdSlot = ({ adSlotId }) => {
   useEffect(() => {
+    if (!window.adsbygoogle) return;
+
     try {
-      // Pushes the ad to the specific <ins> tag
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (e) {
       console.error("AdSense error:", e);
     }
-  }, [adSlotId]); // Re-run if ID changes
+  }, [adSlotId]);
 
   return (
     <div className="ad-container overflow-hidden my-4 flex justify-center min-h-[100px] w-full bg-gray-50 rounded-xl">
       <ins
         className="adsbygoogle"
         style={{ display: "block", width: "100%" }}
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" // 👈 REPLACE WITH YOUR PUB ID
-        data-ad-slot={adSlotId} // 👈 Passed from Home
+        data-ad-client="ca-pub-8189716382630994"   {/* ✅ YOUR REAL PUB ID */}
+        data-ad-slot={adSlotId}
         data-ad-format="auto"
         data-full-width-responsive="true"
       ></ins>
@@ -66,6 +67,7 @@ const AdCard = ({ ad, variant }) => {
       </div>
     );
   }
+
   return null;
 };
 
@@ -73,7 +75,6 @@ const AdCard = ({ ad, variant }) => {
    Main Home Page
 ================================= */
 function Home({ ads = [], useGoogleAds }) {
-  // Performance optimization: Group ads by their placement
   const groupedAds = useMemo(() => {
     return ads.reduce((acc, ad) => {
       acc[ad.placement] = acc[ad.placement] || [];
@@ -84,16 +85,17 @@ function Home({ ads = [], useGoogleAds }) {
 
   const { hero = [], sidebar = [], bottom = [] } = groupedAds;
 
-  // 📝 CONFIG: Replace these strings with your Real AdSense Slot IDs
+  // ✅ USE YOUR REAL SLOT ID HERE
   const ADSENSE_IDS = {
-    HERO: "1111111111",
-    SIDEBAR: "2222222222",
-    BOTTOM: "3333333333",
+    HERO: "9637993193",
+    SIDEBAR: "9637993193",
+    BOTTOM: "9637993193",
   };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 space-y-12">
-      {/* 1. HERO SECTION */}
+
+      {/* HERO SECTION */}
       <section>
         {useGoogleAds ? (
           <GoogleAdSlot adSlotId={ADSENSE_IDS.HERO} />
@@ -120,7 +122,7 @@ function Home({ ads = [], useGoogleAds }) {
         )}
       </section>
 
-      {/* 2. MAIN CONTENT + SIDEBAR */}
+      {/* MAIN + SIDEBAR */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         <main className="md:col-span-3 bg-white p-10 rounded-3xl shadow-sm border border-gray-100 min-h-[400px]">
           <h1 className="text-3xl font-black text-gray-900 mb-6">
@@ -146,7 +148,7 @@ function Home({ ads = [], useGoogleAds }) {
         </aside>
       </div>
 
-      {/* 3. BOTTOM SECTION */}
+      {/* BOTTOM SECTION */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {useGoogleAds ? (
           <>
@@ -154,7 +156,9 @@ function Home({ ads = [], useGoogleAds }) {
             <GoogleAdSlot adSlotId={ADSENSE_IDS.BOTTOM} />
           </>
         ) : (
-          bottom.map((ad) => <AdCard key={ad.id} ad={ad} variant="bottom" />)
+          bottom.map((ad) => (
+            <AdCard key={ad.id} ad={ad} variant="bottom" />
+          ))
         )}
       </section>
     </div>
