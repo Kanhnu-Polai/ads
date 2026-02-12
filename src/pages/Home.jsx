@@ -19,7 +19,7 @@ const GoogleAdSlot = ({ adSlotId }) => {
       <ins
         className="adsbygoogle"
         style={{ display: "block", width: "100%" }}
-        data-ad-client="ca-pub-8189716382630994"   {/* ✅ YOUR REAL PUB ID */}
+        data-ad-client="ca-pub-8189716382630994"   
         data-ad-slot={adSlotId}
         data-ad-format="auto"
         data-full-width-responsive="true"
